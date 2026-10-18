@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#e85d91">
+  <meta name="description" content="Jesgel — a kind space for relationship advice and reflection.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/jesgel.svg" type="image/svg+xml">
+  <title>Jesgel — Your relationship companion</title>
+  <style>
+    :root{--pink:#e85d91;--pink2:#f9c4d8;--pale:#fff1f6;--ink:#382530;--muted:#8a737e;--white:#fff;--line:#f3dce5;--shadow:0 12px 35px #a53f6815}
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(160deg,#fff6fa,#fff 48%,#fff0f6);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}
+    .app{max-width:760px;margin:auto;min-height:100vh;display:flex;flex-direction:column;padding:env(safe-area-inset-top) 14px env(safe-area-inset-bottom)}
+    header{display:flex;align-items:center;gap:12px;padding:18px 4px 14px;border-bottom:1px solid var(--line)}
+    .logo{width:48px;height:48px;border-radius:17px;background:linear-gradient(145deg,#f58db4,#df477f);display:grid;place-items:center;color:white;font-size:25px;box-shadow:0 7px 18px #e85d9140}
+    .brand{flex:1}.brand h1{font-size:21px;letter-spacing:1.5px;margin:0}.brand p{margin:3px 0 0;font-size:12px;color:var(--muted)}
+    .status{font-size:11px;color:#b94373;background:#ffe3ee;padding:7px 10px;border-radius:99px;white-space:nowrap}
+    .welcome{padding:22px 5px 12px}.welcome h2{font-size:23px;margin:0 0 7px;line-height:1.25}.welcome p{color:var(--muted);font-size:14px;line-height:1.55;margin:0}
+    .chips{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0 12px}
+    .chip{border:1px solid #f1c7d8;background:#fff;color:#a83e6c;border-radius:99px;padding:9px 12px;font-size:12px;cursor:pointer}
+    .chip:active,.chip:focus{background:var(--pale);outline:2px solid #f5b2cc}
+    #chat{display:flex;flex-direction:column;gap:12px;padding:8px 0 16px;flex:1}
+    .msg{max-width:88%;padding:12px 14px;border-radius:18px;font-size:14px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere}
+    .bot{align-self:flex-start;background:#fff;border:1px solid var(--line);border-bottom-left-radius:5px;box-shadow:var(--shadow)}
+    .user{align-self:flex-end;background:linear-gradient(145deg,#ee76a2,#df4b83);color:white;border-bottom-right-radius:5px}
+    .who{display:block;font-size:10px;font-weight:700;letter-spacing:.4px;margin-bottom:4px;opacity:.75}
+    .composer-wrap{position:sticky;bottom:0;background:#fff9fc;padding:10px 0 calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--line)}
+    .composer{display:flex;align-items:flex-end;gap:8px;background:#fff;border:1px solid #edcfdb;border-radius:20px;padding:7px;box-shadow:var(--shadow)}
+    textarea{flex:1;resize:none;min-height:42px;max-height:120px;border:0;outline:0;font:inherit;font-size:14px;padding:11px 8px;color:var(--ink);background:transparent}
+    .send{border:0;border-radius:15px;width:44px;height:44px;background:var(--pink);color:#fff;font-size:20px;cursor:pointer}
+    .send:disabled{opacity:.5}
+    .foot{text-align:center;font-size:10px;color:var(--muted);line-height:1.5;padding:7px 10px 3px}
+    .toolbar{display:flex;justify-content:space-between;gap:10px;margin:0 2px 7px}.textbtn{background:none;border:0;color:#a84670;font-size:12px;cursor:pointer;padding:5px}
+    @media(min-width:600px){.app{padding-left:24px;padding-right:24px}.welcome h2{font-size:27px}#chat{min-height:280px}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="logo" aria-hidden="true">♡</div>
+    <div class="brand"><h1>JESGEL</h1><p>Your relationship companion</p></div>
+    <span class="status">● Here for you</span>
+  </header>
+  <section class="welcome">
+    <h2>A little more understanding,<br>a little more love. 💗</h2>
+    <p>Talk things through in a kind, judgement-free space. Start wherever you feel comfortable.</p>
+    <div class="chips" id="chips">
+      <button class="chip" data-text="I feel sad today">I'm feeling low</button>
+      <button class="chip" data-text="How can I communicate better with my partner?">Communication</button>
+      <button class="chip" data-text="My partner and I had an argument">We had an argument</button>
+      <button class="chip" data-text="How can I show my partner I care?">Show I care</button>
+    </div>
+  </section>
+  <div class="toolbar"><button class="textbtn" id="clear">Clear chat</button><button class="textbtn" id="about">About Jesgel</button></div>
+  <main id="chat" aria-live="polite">
+    <div class="msg bot"><span class="who">JESGEL</span>Hi there 💗 I'm glad you came by. What's on your mind today?</div>
+  </main>
+  <div class="composer-wrap">
+    <form class="composer" id="form">
+      <textarea id="input" rows="1" placeholder="Share what's on your mind…" aria-label="Your message"></textarea>
+      <button class="send" type="submit" aria-label="Send message">➤</button>
+    </form>
+    <div class="foot">This starter version replies using built-in guidance; it is not connected to an AI service yet.<br>For urgent danger or abuse, contact a trusted adult or local emergency support.</div>
+  </div>
+</div>
+<script>
+const chat=document.querySelector('#chat'), input=document.querySelector('#input'), form=document.querySelector('#form');
+function addMessage(text,kind){const el=document.createElement('div');el.className='msg '+kind;const who=document.createElement('span');who.className='who';who.textContent=kind==='bot'?'JESGEL':'YOU';el.appendChild(who);el.appendChild(document.createTextNode(text));chat.appendChild(el);el.scrollIntoView({behavior:'smooth',block:'nearest'});}
+function answer(raw){
+ const s=raw.toLowerCase();
+ if(/suicid|hurt myself|self.harm|want to die/.test(s)) return "I'm really sorry things feel so heavy. You deserve support from a real person, not to handle this alone. Please tell a trusted adult or someone you trust right now, especially if you may be in immediate danger.";
+ if(/abuse|threaten|afraid of|hit me|forced me/.test(s)) return "Your safety matters, and you don't deserve to be threatened or hurt. If it's safe, reach out to a trusted adult or supportive person and make a plan to get somewhere safe. You don't have to manage this alone.";
+ if(/sad|lonely|hurt|cry|upset|stress|anxious|worried/.test(s)) return "I'm sorry you're feeling this way 💗. Your feelings matter. Take a slow breath if that helps, and give yourself permission to feel what you're feeling. What happened that made today difficult?";
+ if(/break.?up|leave me|separated|end the relationship/.test(s)) return "That can be painful and confusing. You don't have to decide everything right now. Give yourself time, talk with someone you trust, and think about what you need to feel respected and safe. What part is hardest for you?";
+ if(/fight|argument|angry|ignored|not talking|silent treatment|problem/.test(s)) return "That sounds difficult. If you both feel safe, try talking when you're calm: describe what happened, how you felt, and what you'd like to change—without insults or blame. What do you wish your partner understood?";
+ if(/sorry|apolog/.test(s)) return "A meaningful apology is honest and specific: say what you did, acknowledge its impact, and explain what you'll try to do differently. Give the other person space to respond; forgiveness can't be demanded.";
+ if(/love|girlfriend|boyfriend|partner|relationship|care|romantic/.test(s)) return "Healthy love grows through respect, honesty, listening, boundaries, and consistent actions—not pressure or control. What would you most like help with in your relationship?";
+ if(/hello|hi\b|hey\b/.test(s)) return "Hey 💗 I'm here to listen. What's been on your mind?";
+ return "Thank you for sharing that with me 💗. I want to understand before suggesting anything. Can you tell me a little more about what happened and how it made you feel?";
+}
+form.addEventListener('submit',e=>{e.preventDefault();const value=input.value.trim();if(!value)return;addMessage(value,'user');input.value='';input.style.height='auto';setTimeout(()=>addMessage(answer(value),'bot'),220);});
+input.addEventListener('input',()=>{input.style.height='auto';input.style.height=Math.min(input.scrollHeight,120)+'px';});
+document.querySelector('#chips').addEventListener('click',e=>{const b=e.target.closest('button[data-text]');if(b){input.value=b.dataset.text;form.requestSubmit();}});
+document.querySelector('#clear').addEventListener('click',()=>{chat.replaceChildren();addMessage("Fresh start 💗 What's on your mind today?",'bot');});
+document.querySelector('#about').addEventListener('click',()=>addMessage("Jesgel is a relationship-support starter app designed to encourage respect, communication, and reflection. Replies are built-in examples, not professional counselling or live AI.",'bot'));
+if('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body>
+</html>

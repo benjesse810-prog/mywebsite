@@ -1,0 +1,18 @@
+{
+  "name": "Jesgel \u2014 Relationship Companion",
+  "short_name": "Jesgel",
+  "description": "A kind space for relationship advice and reflection.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#fff6fa",
+  "theme_color": "#e85d91",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icons/jesgel.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
